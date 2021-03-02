@@ -2,12 +2,7 @@
 {% block content %}
 	<div class="hero">
 		<div class="header clearfix">
-			<a href="/" class="logo"></a>
-			<ul class="menu">
-				<li><a href="/">домой</a></li>
-				<li><a href="/products/">продукты</a></li>
-				<li><a href="/contact/" class="active">контакты</a></li>
-			</ul>
+			{% include 'mainapp/includes/inc_nav_menu.html' %}
 			<a href="#" class="search"></a>
 			<a href="#" class="basket"></a>
 		</div>

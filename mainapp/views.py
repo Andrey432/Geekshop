@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Product
+from .models import Product, ProductCategory
 
 
 def main(request):
@@ -20,15 +20,13 @@ def contact(request):
     return render(request, 'mainapp/contact.html', context=context)
 
 
-def products(request):
+def products(request, pk=None):
     context = {
         "page": 'products',
         "page_title": 'товары',
-        "categories": [],
+        "categories": ProductCategory.objects.all(),
+        "cur_category": pk,
         "active_ctg": request.resolver_match.url_name
     }
-
-    if request.resolver_match.url_name == 'products':
-        context["active_ctg"] = 'products_all'
 
     return render(request, 'mainapp/products.html', context=context)

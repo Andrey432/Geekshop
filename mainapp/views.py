@@ -1,10 +1,12 @@
 from django.shortcuts import render
+from .models import Product
 
 
 def main(request):
     context = {
         "page": 'home',
-        "page_title": 'главная'
+        "page_title": 'главная',
+        "products": Product.objects.all()[:3],
     }
     return render(request, 'mainapp/index.html', context=context)
 

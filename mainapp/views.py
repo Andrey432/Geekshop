@@ -1,11 +1,12 @@
 from django.shortcuts import render
-from json_file_loader import load_json_data
+from .models import Product, ProductCategory
 
 
 def main(request):
     context = {
         "page": 'home',
-        "page_title": 'главная'
+        "page_title": 'главная',
+        "products": Product.objects.all()[:3],
     }
     return render(request, 'mainapp/index.html', context=context)
 
@@ -14,20 +15,18 @@ def contact(request):
     context = {
         "page": 'contact',
         "page_title": 'контакты',
-        "contacts_list": load_json_data('contacts_list', []),
+        "contacts_list": [],
     }
     return render(request, 'mainapp/contact.html', context=context)
 
 
-def products(request):
+def products(request, pk=None):
     context = {
         "page": 'products',
         "page_title": 'товары',
-        "categories": load_json_data('product_categories', []),
+        "categories": ProductCategory.objects.all(),
+        "cur_category": pk,
         "active_ctg": request.resolver_match.url_name
     }
-
-    if request.resolver_match.url_name == 'products':
-        context["active_ctg"] = 'products_all'
 
     return render(request, 'mainapp/products.html', context=context)

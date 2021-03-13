@@ -1,7 +1,6 @@
-<!-- Пошёл по немного другому пути: передаваемым контекстом задаётся, какая сейчас страница отображается -->
 <a href={% url 'home' %} class="logo"></a>
 <ul class="menu">
     <li><a href={% url 'home' %} {% if page == 'home' %} class="active" {% endif %}>домой</a></li>
-    <li><a href={% url 'products' %} {% if page == 'products' %} class="active" {% endif %}>продукты</a></li>
+    <li><a href={% url 'products:products' %} {% if page == 'products' %} class="active" {% endif %}>продукты</a></li>
     <li><a href={% url 'contact' %} {% if page == 'contact' %} class="active" {% endif %}>контакты</a></li>
 </ul>

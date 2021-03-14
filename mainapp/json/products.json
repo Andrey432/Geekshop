@@ -1,0 +1,37 @@
+[
+    {
+        "category": "Лампы",
+        "name": "Лампа",
+        "image": "products_previews/product-5-sm.jpg",
+        "price": 7777,
+        "quantity": 99
+    },
+    {
+        "category": "Стулья",
+        "name": "Стул модный",
+        "image": "products_previews/product-2.jpg",
+        "price": 9999,
+        "quantity": 99
+    },
+    {
+        "category": "Стулья",
+        "name": "Стул необыкновенный",
+        "image": "products_previews/product-4.jpg",
+        "price": 99999,
+        "quantity": 99
+    },
+    {
+        "category": "Диваны",
+        "name": "Диван обыкновенный",
+        "image": "products_previews/product-3-sm.jpg",
+        "price": 9999,
+        "quantity": 99
+    },
+    {
+        "category": "Разное",
+        "name": "Никто не знает, что это",
+        "image": "products_previews/product-61.jpg",
+        "price": 999999,
+        "quantity": 1
+    }
+]

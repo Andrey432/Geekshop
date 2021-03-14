@@ -1,6 +1,6 @@
-from django.contrib.auth.models import User
 from django.core.management import BaseCommand
 from geekshop.settings import BASE_DIR
+from authapp.models import ShopUser
 from mainapp.models import *
 import json
 
@@ -25,4 +25,4 @@ class Command(BaseCommand):
             Product.objects.create(**prod)
 
         contacts = _load_json_datafile('mainapp', 'contacts_info')
-        User.objects.create_superuser('django', password="geekbrains")
+        ShopUser.objects.create_superuser(username='django', password="geekbrains", age=18)

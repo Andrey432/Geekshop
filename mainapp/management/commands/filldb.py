@@ -1,4 +1,6 @@
 from django.core.management import BaseCommand
+from django.db import IntegrityError
+
 from geekshop.settings import BASE_DIR
 from authapp.models import ShopUser
 from mainapp.models import *
@@ -25,4 +27,11 @@ class Command(BaseCommand):
             Product.objects.create(**prod)
 
         contacts = _load_json_datafile('mainapp', 'contacts_info')
-        ShopUser.objects.create_superuser(username='django', password="geekbrains", age=18)
+        CompanyContact.objects.all().delete()
+        for cnt in contacts:
+            CompanyContact.objects.create(**cnt)
+
+        try:
+            ShopUser.objects.create_superuser(username='django', password="geekbrains", age=18)
+        except IntegrityError as e:
+            print(f'{type(e).__name__}: {e}')

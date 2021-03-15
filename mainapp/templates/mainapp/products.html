@@ -11,11 +11,7 @@
 
 	<div class="details">
 		<div class="links clearfix">
-			<ul class="links-menu">
-				{% for ctg in categories %}
-				<li><a href={% url 'products:categories' ctg.pk %} {% if ctg.pk == cur_category %}class="active"{% endif %}>{{ ctg.name }}</a></li>
-				{% endfor %}
-			</ul>
+			{% include 'mainapp/includes/inc_cat_menu.html' %}
 		</div>
 
 		<div class="details-products">

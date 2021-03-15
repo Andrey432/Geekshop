@@ -1,12 +1,13 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
+from django.urls import reverse
 
 from basketapp.models import Basket
 from mainapp.models import Product
 
 
 def basket(request):
-    pass
+    return HttpResponseRedirect(reverse('home'))
 
 
 def basket_add(request, pk):

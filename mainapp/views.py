@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Product, ProductCategory
+from .models import Product, ProductCategory, CompanyContact
 
 
 def main(request):
@@ -15,7 +15,7 @@ def contact(request):
     context = {
         "page": 'contact',
         "page_title": 'контакты',
-        "contacts_list": [],
+        "contacts_list": CompanyContact.objects.all(),
     }
     return render(request, 'mainapp/contact.html', context=context)
 

@@ -7,7 +7,10 @@ from mainapp.models import Product
 
 
 def basket(request):
-    return HttpResponseRedirect(reverse('home'))
+    context = {
+        "title": 'корзина'
+    }
+    return render(request, 'basketapp/basket.html', context=context)
 
 
 def basket_add(request, pk):

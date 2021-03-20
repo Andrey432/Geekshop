@@ -11,3 +11,15 @@ class Basket(models.Model):
 
     def __str__(self):
         return f'{self.product} (User: {self.user})'
+
+    @property
+    def price(self):
+        return self.product.price * self.quantity
+
+    @property
+    def total_price(self):
+        return sum(map(lambda p: p.price, Basket.objects.filter(user=self.user)))
+
+    @property
+    def total_quantity(self):
+        return sum(map(lambda p: p.quantity, Basket.objects.filter(user=self.user)))

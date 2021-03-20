@@ -8,7 +8,8 @@ from mainapp.models import Product
 
 def basket(request):
     context = {
-        "title": 'корзина'
+        "title": 'корзина',
+        "basket_items": Basket.objects.filter(user=request.user)
     }
     return render(request, 'basketapp/basket.html', context=context)
 

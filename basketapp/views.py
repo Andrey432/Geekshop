@@ -26,4 +26,6 @@ def basket_add(request, pk):
 
 
 def basket_remove(request, pk):
-    pass
+    product = get_object_or_404(Basket, pk=pk)
+    product.delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

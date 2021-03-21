@@ -1,13 +1,20 @@
 from django.shortcuts import render, get_object_or_404
 from basketapp.models import Basket
 from .models import Product, ProductCategory, CompanyContact
+import random
+
+
+def _random_products(count):
+    products_list = list(Product.objects.all())
+    random.shuffle(products_list)
+    return products_list[:count]
 
 
 def main(request):
     context = {
         "page": 'home',
         "page_title": 'главная',
-        "products": Product.objects.all()[:3],
+        "most_populars": _random_products(3),
     }
     if request.user.is_authenticated:
         context["basket"] = Basket.objects.filter(user=request.user)
@@ -34,7 +41,8 @@ def products(request, pk=None):
         "page": 'products',
         "page_title": 'товары',
         "categories": [ctg_all] + list(ProductCategory.objects.all()),
-        "cur_category": pk
+        "cur_category": pk,
+        "similar": _random_products(3)
     }
 
     if request.user.is_authenticated:
@@ -58,7 +66,7 @@ def products(request, pk=None):
 def product(request, pk):
     item = get_object_or_404(Product, pk=pk)
     context = {
-        'title': item.name,
+        'page_title': item.name,
         'product': item
     }
     if request.user.is_authenticated:

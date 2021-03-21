@@ -22,14 +22,14 @@
 		<div class="clearfix">
 		</div>
 		<div class="tab-content">
-			{% for item in products %}
+			{% for product in most_populars %}
 				<div class="block">
-					<a href="#">
-						<img src="/media/{{ item.image }}" alt={{ item.short_desc }}>
+					<a href="{% url 'products:product' product.pk %}">
+						<img src="/media/{{ product.image }}" alt={{ product.short_desc }}>
 						<div class="text">
 							<img src={% static 'img/icon-hover.png' %} alt="img">
-							<h4>{{ item.name }}</h4>
-							<p>{{ item.short_desc }}</p>
+							<h4>{{ product.name }}</h4>
+							<p>{{ product.short_desc }}</p>
 						</div>
 					</a>
 				</div>

@@ -53,3 +53,14 @@ def products(request, pk=None):
         return render(request, 'mainapp/products_list.html', context=context)
 
     return render(request, 'mainapp/products.html', context=context)
+
+
+def product(request, pk):
+    item = get_object_or_404(Product, pk=pk)
+    context = {
+        'title': item.name,
+        'product': item
+    }
+    if request.user.is_authenticated:
+        context["basket"] = Basket.objects.filter(user=request.user)
+    return render(request, 'mainapp/product.html', context=context)

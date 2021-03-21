@@ -15,9 +15,9 @@
         {% endif %}
     </ul>
     <a href="#" class="search"></a>
-    {% if basket %}
     <a href={% url 'basket:view' %} class="basket">
-        <span>{{ basket.0.total_quantity }}&nbsp;{{ basket.0.total_price }}&nbsp;руб</span>
+        {% if basket %}
+            <span>{{ basket.0.total_price }}&nbsp;руб&nbsp;({{ basket.0.total_quantity }})</span>
+        {% endif %}
     </a>
-    {% endif %}
 </div>

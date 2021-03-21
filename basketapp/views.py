@@ -12,7 +12,7 @@ from mainapp.models import Product
 def view(request):
     context = {
         "title": 'корзина',
-        "basket_items": Basket.objects.filter(user=request.user).order_by('product__category')
+        "items": Basket.objects.filter(user=request.user).order_by('product__category')
     }
     return render(request, 'basketapp/basket.html', context=context)
 

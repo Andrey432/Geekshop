@@ -3,6 +3,6 @@
 {% block content %}
   <div class="basket_list">
     {% include 'basketapp/includes/inc_basket_list.html' %}
-    <button class="btn btn-round"><a href="{% url 'home' %}">на главную</a></button>
+    <!-- Кнопка пропадала после ajax-запроса, пришлось вынести -->
   </div>
 {% endblock %}

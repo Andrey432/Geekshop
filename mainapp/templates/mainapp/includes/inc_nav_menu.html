@@ -1,21 +1,23 @@
-<a href={% url 'home' %} class="logo"></a>
-<ul class="menu">
-    <li><a href={% url 'home' %} {% if page == 'home' %} class="active" {% endif %}>домой</a></li>
-    <li><a href={% url 'products:products' %} {% if page == 'products' %} class="active" {% endif %}>продукты</a></li>
-    <li><a href={% url 'contact' %} {% if page == 'contact' %} class="active" {% endif %}>контакты</a></li>
+<div class="header clearfix">
+    <a href={% url 'home' %} class="logo"></a>
+    <ul class="menu">
+        <li><a href={% url 'home' %} {% if page == 'home' %} class="active" {% endif %}>домой</a></li>
+        <li><a href={% url 'products:products' %} {% if page == 'products' %} class="active" {% endif %}>продукты</a></li>
+        <li><a href={% url 'contact' %} {% if page == 'contact' %} class="active" {% endif %}>контакты</a></li>
 
-    {% if user.is_authenticated %}
-    <li><a href={% url 'auth:edit' %}>{{ user.first_name|default:"Пользователь" }}</a></li>
-    <li><a href={% url 'auth:logout' %}>выход</a></li>
-    {% else %}
-    <li><a href={% url 'auth:login' %}>вход</a></li>
-    <li><a href={% url 'auth:register' %}>регистрация</a></li>
+        {% if user.is_authenticated %}
+        <li><a href={% url 'auth:edit' %}>{{ user.first_name|default:"Пользователь" }}</a></li>
+        <li><a href={% url 'auth:logout' %}>выход</a></li>
+
+        {% else %}
+        <li><a href={% url 'auth:login' %}>вход</a></li>
+        <li><a href={% url 'auth:register' %}>регистрация</a></li>
+        {% endif %}
+    </ul>
+    <a href="#" class="search"></a>
+    {% if basket %}
+    <a href={% url 'basket:view' %} class="basket">
+        <span>{{ basket.0.total_quantity }}&nbsp;{{ basket.0.total_price }}&nbsp;руб</span>
+    </a>
     {% endif %}
-</ul>
-
-<a href="#" class="search"></a>
-{% if basket %}
-<a href={% url 'basket:view' %} class="basket">
-    <span>{{ basket }}</span>
-</a>
-{% endif %}
+</div>

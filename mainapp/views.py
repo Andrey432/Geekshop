@@ -9,6 +9,8 @@ def main(request):
         "page_title": 'главная',
         "products": Product.objects.all()[:3],
     }
+    if request.user.is_authenticated:
+        context["basket"] = Basket.objects.filter(user=request.user)
     return render(request, 'mainapp/index.html', context=context)
 
 
@@ -18,6 +20,8 @@ def contact(request):
         "page_title": 'контакты',
         "contacts_list": CompanyContact.objects.all(),
     }
+    if request.user.is_authenticated:
+        context["basket"] = Basket.objects.filter(user=request.user)
     return render(request, 'mainapp/contact.html', context=context)
 
 
@@ -34,7 +38,7 @@ def products(request, pk=None):
     }
 
     if request.user.is_authenticated:
-        context["basket"] = sum(Basket.objects.filter(user=request.user).values_list('quantity', flat=True))
+        context["basket"] = Basket.objects.filter(user=request.user)
 
     if pk is not None:
         if pk == 0:

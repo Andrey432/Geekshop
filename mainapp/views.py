@@ -1,15 +1,23 @@
 from django.shortcuts import render, get_object_or_404
-
 from basketapp.models import Basket
 from .models import Product, ProductCategory, CompanyContact
+import random
+
+
+def _random_products(count):
+    products_list = list(Product.objects.all())
+    random.shuffle(products_list)
+    return products_list[:count]
 
 
 def main(request):
     context = {
         "page": 'home',
         "page_title": 'главная',
-        "products": Product.objects.all()[:3],
+        "most_populars": _random_products(3),
     }
+    if request.user.is_authenticated:
+        context["basket"] = Basket.objects.filter(user=request.user)
     return render(request, 'mainapp/index.html', context=context)
 
 
@@ -19,6 +27,8 @@ def contact(request):
         "page_title": 'контакты',
         "contacts_list": CompanyContact.objects.all(),
     }
+    if request.user.is_authenticated:
+        context["basket"] = Basket.objects.filter(user=request.user)
     return render(request, 'mainapp/contact.html', context=context)
 
 
@@ -31,11 +41,12 @@ def products(request, pk=None):
         "page": 'products',
         "page_title": 'товары',
         "categories": [ctg_all] + list(ProductCategory.objects.all()),
-        "cur_category": pk
+        "cur_category": pk,
+        "similar": _random_products(3)
     }
 
     if request.user.is_authenticated:
-        context["basket"] = sum(Basket.objects.filter(user=request.user).values_list('quantity', flat=True))
+        context["basket"] = Basket.objects.filter(user=request.user)
 
     if pk is not None:
         if pk == 0:
@@ -50,3 +61,14 @@ def products(request, pk=None):
         return render(request, 'mainapp/products_list.html', context=context)
 
     return render(request, 'mainapp/products.html', context=context)
+
+
+def product(request, pk):
+    item = get_object_or_404(Product, pk=pk)
+    context = {
+        'page_title': item.name,
+        'product': item
+    }
+    if request.user.is_authenticated:
+        context["basket"] = Basket.objects.filter(user=request.user)
+    return render(request, 'mainapp/product.html', context=context)

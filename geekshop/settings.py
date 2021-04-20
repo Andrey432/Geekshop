@@ -132,6 +132,7 @@ AUTH_USER_MODEL = 'authapp.ShopUser'
 
 LOGIN_URL = '/auth/login'
 
+BASE_URL = 'http://localhost:8000'
 
 EMAIL_HOST = 'localhost'
 

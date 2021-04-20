@@ -53,6 +53,8 @@ class ShopUserRegisterForm(forms.UserCreationForm):
         user.is_active = False
         salt = hashlib.sha1(str(random.random()).encode('utf-8')).hexdigest()[:6]
         user.activation_key = hashlib.sha1((user.email + salt).encode('utf-8')).hexdigest()
+        user.save()
+        return user
 
 
 class ShopUserEditForm(forms.UserChangeForm):

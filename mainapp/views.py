@@ -1,5 +1,4 @@
 from django.shortcuts import render, get_object_or_404
-from basketapp.models import Basket
 from .models import Product, ProductCategory, CompanyContact
 import random
 
@@ -16,8 +15,6 @@ def main(request):
         "page_title": 'главная',
         "most_populars": _random_products(3),
     }
-    if request.user.is_authenticated:
-        context["basket"] = Basket.objects.filter(user=request.user)
     return render(request, 'mainapp/index.html', context=context)
 
 
@@ -27,8 +24,6 @@ def contact(request):
         "page_title": 'контакты',
         "contacts_list": CompanyContact.objects.all(),
     }
-    if request.user.is_authenticated:
-        context["basket"] = Basket.objects.filter(user=request.user)
     return render(request, 'mainapp/contact.html', context=context)
 
 
@@ -44,9 +39,6 @@ def products(request, pk=None):
         "cur_category": pk,
         "similar": _random_products(3)
     }
-
-    if request.user.is_authenticated:
-        context["basket"] = Basket.objects.filter(user=request.user)
 
     if pk is not None:
         if pk == 0:
@@ -69,6 +61,4 @@ def product(request, pk):
         'page_title': item.name,
         'product': item
     }
-    if request.user.is_authenticated:
-        context["basket"] = Basket.objects.filter(user=request.user)
     return render(request, 'mainapp/product.html', context=context)

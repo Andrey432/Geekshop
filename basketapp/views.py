@@ -53,8 +53,5 @@ def basket_edit(request, pk, quantity):
                 item.quantity = int(quantity)
                 item.save()
 
-        context = {
-            'items': basket
-        }
-        result = render_to_string('basketapp/includes/inc_basket_list.html', context=context)
+        result = render_to_string('basketapp/includes/inc_basket_list.html')
         return JsonResponse({"result": result})

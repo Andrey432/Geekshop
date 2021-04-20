@@ -1,3 +1,6 @@
+import hashlib
+import random
+
 from django.contrib.auth import forms
 from django.forms import HiddenInput
 
@@ -44,6 +47,12 @@ class ShopUserRegisterForm(forms.UserCreationForm):
         if user is not None and user.email != email:
             raise forms.ValidationError('Данный email уже используется другим аккаунтом')
         return email
+
+    def save(self, *args, **kwargs):
+        user = super().save(*args, **kwargs)
+        user.is_active = False
+        salt = hashlib.sha1(str(random.random()).encode('utf-8')).hexdigest()[:6]
+        user.activation_key = hashlib.sha1((user.email + salt).encode('utf-8')).hexdigest()
 
 
 class ShopUserEditForm(forms.UserChangeForm):

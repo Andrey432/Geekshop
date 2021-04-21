@@ -25,6 +25,9 @@ class ShopUserRegisterForm(forms.UserCreationForm):
         super().__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
+            field.help_text = ''
+            if field_name == 'password':
+                field.widget = HiddenInput()
 
     def clean_first_name(self):
         first_name = self.cleaned_data['first_name']

@@ -10,7 +10,7 @@
         <li><a href={% url 'auth:logout' %}>выход</a></li>
 
         {% if user.is_superuser %}
-            <li><a href="{% url 'admin:users' %}">админка</a></li>
+            <li><a href="{% url 'adminapp:users' %}">админка</a></li>
         {% endif %}
 
         {% else %}

@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render, get_object_or_404
 from basketapp.models import Basket
 from .models import Product, ProductCategory, CompanyContact
@@ -13,7 +14,7 @@ def _random_products(count):
 def main(request):
     context = {
         "page": 'home',
-        "page_title": 'главная',
+        "title": 'главная',
         "most_populars": _random_products(3),
     }
     if request.user.is_authenticated:
@@ -24,7 +25,7 @@ def main(request):
 def contact(request):
     context = {
         "page": 'contact',
-        "page_title": 'контакты',
+        "title": 'контакты',
         "contacts_list": CompanyContact.objects.all(),
     }
     if request.user.is_authenticated:
@@ -33,13 +34,10 @@ def contact(request):
 
 
 def products(request, pk=None):
-    ctg_all = {
-        "name": 'все',
-        "pk": 0,
-    }
+    ctg_all = {"name": 'все', "pk": 0}
     context = {
         "page": 'products',
-        "page_title": 'товары',
+        "title": 'товары',
         "categories": [ctg_all] + list(ProductCategory.objects.all()),
         "cur_category": pk,
         "similar": _random_products(3)
@@ -56,8 +54,18 @@ def products(request, pk=None):
             category = get_object_or_404(ProductCategory, pk=pk)
             products_list = Product.objects.filter(category=category)
 
+        page = request.GET.get('p', 1)
+        paginator = Paginator(products_list, 2)
+        try:
+            products_paginator = paginator.page(page)
+        except PageNotAnInteger:
+            products_paginator = paginator.page(1)
+        except EmptyPage:
+            products_paginator = paginator.page(paginator.num_pages)
+
         context["selected_category"] = category
-        context["products"] = products_list
+        context["products"] = products_paginator
+
         return render(request, 'mainapp/products_list.html', context=context)
 
     return render(request, 'mainapp/products.html', context=context)
@@ -66,7 +74,7 @@ def products(request, pk=None):
 def product(request, pk):
     item = get_object_or_404(Product, pk=pk)
     context = {
-        'page_title': item.name,
+        'title': item.name,
         'product': item
     }
     if request.user.is_authenticated:

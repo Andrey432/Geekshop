@@ -7,7 +7,7 @@
       <a href="{% url 'adminapp:product_create' category.pk %}">новый продукт</a>
     </button>
 
-    {% for object in objects %}
+    {% for object in object_list %}
       <div class="product_record">
         <img
           src="/media/{{object.image|default:'products_images/default.jpg'}}"

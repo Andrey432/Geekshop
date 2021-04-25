@@ -9,6 +9,10 @@
         <li><a href={% url 'auth:edit' %}>{{ user.first_name|default:"Пользователь" }}</a></li>
         <li><a href={% url 'auth:logout' %}>выход</a></li>
 
+        {% if user.is_superuser %}
+            <li><a href="{% url 'adminapp:users' %}">админка</a></li>
+        {% endif %}
+
         {% else %}
         <li><a href={% url 'auth:login' %}>вход</a></li>
         <li><a href={% url 'auth:register' %}>регистрация</a></li>

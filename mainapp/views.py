@@ -1,12 +1,11 @@
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render, get_object_or_404
-from basketapp.models import Basket
 from .models import Product, ProductCategory, CompanyContact
 import random
 
 
 def _random_products(count):
-    products_list = list(Product.objects.all())
+    products_list = list(Product.objects.all().select_related())
     random.shuffle(products_list)
     return products_list[:count]
 
@@ -17,8 +16,6 @@ def main(request):
         "title": 'главная',
         "most_populars": _random_products(3),
     }
-    if request.user.is_authenticated:
-        context["basket"] = Basket.objects.filter(user=request.user)
     return render(request, 'mainapp/index.html', context=context)
 
 
@@ -28,8 +25,6 @@ def contact(request):
         "title": 'контакты',
         "contacts_list": CompanyContact.objects.all(),
     }
-    if request.user.is_authenticated:
-        context["basket"] = Basket.objects.filter(user=request.user)
     return render(request, 'mainapp/contact.html', context=context)
 
 
@@ -43,16 +38,22 @@ def products(request, pk=None):
         "similar": _random_products(3)
     }
 
-    if request.user.is_authenticated:
-        context["basket"] = Basket.objects.filter(user=request.user)
-
     if pk is not None:
         if pk == 0:
             category = ctg_all
-            products_list = Product.objects.all().order_by('price')
+            products_list = Product.objects.all().order_by('price').select_related()
         else:
             category = get_object_or_404(ProductCategory, pk=pk)
-            products_list = Product.objects.filter(category=category)
+            products_list = Product.objects.filter(category=category).select_related()
+
+        page = request.GET.get('p', 1)
+        paginator = Paginator(products_list, 2)
+        try:
+            products_paginator = paginator.page(page)
+        except PageNotAnInteger:
+            products_paginator = paginator.page(1)
+        except EmptyPage:
+            products_paginator = paginator.page(paginator.num_pages)
 
         page = request.GET.get('p', 1)
         paginator = Paginator(products_list, 2)
@@ -77,6 +78,4 @@ def product(request, pk):
         'title': item.name,
         'product': item
     }
-    if request.user.is_authenticated:
-        context["basket"] = Basket.objects.filter(user=request.user)
     return render(request, 'mainapp/product.html', context=context)

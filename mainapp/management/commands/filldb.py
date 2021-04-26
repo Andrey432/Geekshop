@@ -9,7 +9,7 @@ import json
 
 def _load_json_datafile(main, file):
     path = BASE_DIR / f'{main}/json/{file}.json'
-    with open(path, 'r', encoding='utf-8') as f:
+    with open(path, 'r', encoding='utf-8', errors='ignore') as f:
         return json.load(f)
 
 

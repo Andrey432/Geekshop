@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '%idj$ci6$2_#i4_n#gd^2r-d0k#^&8(@+ck&wiwvo3b528yehn'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -125,13 +125,17 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = (
-    BASE_DIR / 'static',
-)
+STATIC_ROOT = BASE_DIR / 'static'
+
+# STATICFILES_DIRS = (
+#     BASE_DIR / 'static',
+# )
+
 
 MEDIA_URL = '/media/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = BASE_DIR / 'media'
+
 
 AUTH_USER_MODEL = 'authapp.ShopUser'
 

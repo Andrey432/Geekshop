@@ -27,7 +27,7 @@ class ShopUsersListView(ListView):
 class ShopUserCreateView(CreateView):
     model = ShopUser
     template_name = 'adminapp/user_edit.html'
-    success_url = 'adminapp:users'
+    success_url = reverse_lazy('adminapp:users')
     form_class = ShopUserRegisterForm
 
     @method_decorator(user_passes_test(_is_super))
@@ -114,15 +114,6 @@ class ProductCategoryDeleteView(DeleteView):
         return HttpResponseRedirect(self.success_url)
 
 
-@user_passes_test(_is_super)
-def product_read(request, pk):
-    context = {
-        'title': "Информация о товаре",
-        'object': get_object_or_404(Product, pk=pk)
-    }
-    return render(request, 'adminapp/product_detail.html', context=context)
-
-
 class ProductsListView(ListView):
     model = Product
     template_name = 'adminapp/products.html'
@@ -137,7 +128,7 @@ class ProductsListView(ListView):
         return context
 
 
-class ProductsDetailView(DetailView):
+class ProductDetailView(DetailView):
     model = Product
     template_name = 'adminapp/product_detail.html'
 
@@ -149,7 +140,7 @@ class ProductsDetailView(DetailView):
 class ProductCreateView(CreateView):
     model = Product
     template_name = 'adminapp/product_edit.html'
-    success_url = 'adminapp:products'
+    success_url = reverse_lazy('adminapp:products')
     form_class = ProductEditForm
 
     @method_decorator(user_passes_test(_is_super))
@@ -165,25 +156,35 @@ class ProductCreateView(CreateView):
 class ProductUpdateView(UpdateView):
     model = Product
     template_name = 'adminapp/product_edit.html'
-    success_url = 'adminapp:products'
     form_class = ProductEditForm
 
     @method_decorator(user_passes_test(_is_super))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['category'] = self.get_object().category.pk
+        return context
+
+    def get_success_url(self):
+        return reverse('adminapp:products', args=[self.get_object().category.pk])
+
 
 class ProductDeleteView(DeleteView):
     model = Product
     template_name = 'adminapp/product_delete.html'
-    success_url = 'adminapp:products'
 
     @method_decorator(user_passes_test(_is_super))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
+    def get_success_url(self):
+        url = super().get_success_url()
+        return url
+
     def delete(self, request, *args, **kwargs):
         object_ = self.get_object()
         object_.is_active = False
         object_.save()
-        return HttpResponseRedirect(self.success_url)
+        return HttpResponseRedirect(reverse('adminapp:products', args=[object_.category.pk]))

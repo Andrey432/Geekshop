@@ -5,7 +5,7 @@ import random
 
 
 def _random_products(count):
-    products_list = list(Product.objects.all())
+    products_list = list(Product.objects.all().select_related())
     random.shuffle(products_list)
     return products_list[:count]
 
@@ -41,10 +41,10 @@ def products(request, pk=None):
     if pk is not None:
         if pk == 0:
             category = ctg_all
-            products_list = Product.objects.all().order_by('price')
+            products_list = Product.objects.all().order_by('price').select_related()
         else:
             category = get_object_or_404(ProductCategory, pk=pk)
-            products_list = Product.objects.filter(category=category)
+            products_list = Product.objects.filter(category=category).select_related()
 
         page = request.GET.get('p', 1)
         paginator = Paginator(products_list, 2)

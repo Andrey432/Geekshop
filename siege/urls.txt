@@ -1,0 +1,10 @@
+http://176.99.11.200/
+http://176.99.11.200/products/
+http://176.99.11.200/contact/
+http://176.99.11.200/products/category/1/
+http://176.99.11.200/products/category/2/
+http://176.99.11.200/products/category/3/
+http://176.99.11.200/products/category/4/
+http://176.99.11.200/basket/
+http://176.99.11.200/order/
+http://176.99.11.200/auth/edit/
